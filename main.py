@@ -53,26 +53,31 @@ for i in range(0,lenNodes):
             break
 ans.add(a)
 ans.add(b)
-activeNode=checkActivity(activeNode,deactiveNode[a],deactiveNode[b])
+activeNode=checkActivity(activeNode,list(deactiveNode)[a],list(deactiveNode)[b])
 deactiveNode-=activeNode
 if max==lenNodes:
     print("We need to active this nodes to active all:/n",ans)
     # print("To active these (max influence): "activeNode)
     exit()
 
-max=0
-a=0
-b=0
-for i in range(0,len(deactiveNode)):
-    for(j in range(0,len(activeNode)):
-        influence=checkActivity(activeNode,deactiveNode[i],activeNode[j])
-        n=len(influence)
-        if n>max:
-            a,b,max=i,j,n
-        if max==lenNodes:
-            break
-activeNode=checkActivity(activeNode,deactiveNode[a],activeNode[b])
-deactiveNode-=activeNode
+for k in range(0, lenNodes - 2):
+    max=0
+    a=0
+    b=0
+    for i in range(0,len(deactiveNode)):
+        for j in range(0,len(activeNode)):
+            influence=checkActivity(activeNode,list(deactiveNode)[i],list(activeNode)[j])
+            n=len(influence)
+            if n>max:
+                a,b,max=i,j,n
+            if max==lenNodes:
+                break
+    activeNode=checkActivity(activeNode,nodes[a],nodes[b])
+    deactiveNode-=activeNode
+    ans.add(b)
+
+print("We need to active this nodes to active all: ",ans)
+print("To active these (max influence): ",activeNode)
     
 nx.draw(g , with_labels=True)
 plt.show()
