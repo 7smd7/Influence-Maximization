@@ -3,15 +3,16 @@ import matplotlib.pyplot as plt
 
 g = nx.DiGraph()
 
-n = 7  # 10 nodes
-m = 10  # 20 graph
+n = 7  # nodes
+m = 10  # directed edge
 
-g = nx.gnm_random_graph(n, m,directed=True)
+g = nx.gnm_random_graph(n, m,directed=True) #random directed graph(|V|=n,|E|=m)
 
-graph={n: adj for n, adj in g.adjacency()}
+graph={n: adj for n, adj in g.adjacency()} #make dic from graph
 nodes=list(graph.keys())
-lenNodes=len(graph.keys())
+lenNodes=len(nodes)
 
+# make matrix of vertex for matual adjacency.
 intersections={}
 for i in range(0,lenNodes):
     intersections[i]={}
@@ -20,8 +21,8 @@ for i in range(0,lenNodes):
         intersections[i][j]=intersection
 
 activeNode={}
-# deactiveNode= set(nodes)
-
+# deep activity finder with recursive func.
+# So search what nodes will be active when you active m and n nodes and their intersections.
 def checkActivity( activeNode, m, n ):
     activeNode={m,n}.union(activeNode)
     toActive=set(intersections[m][n]) - activeNode
@@ -36,8 +37,22 @@ def checkActivity( activeNode, m, n ):
             ans=ans.union(checkActivity(merge,list(toActive)[i],list(toActive)[j]))
     return ans
 
+
+# find max influence for couple of first nodes.
+max=0
+a=0
+b=0
+for i in range(0,lenNodes):
+    for j in range(i+1,len(g.nodes)):
+        influence=checkActivity(activeNode,nodes[i],nodes[j])
+        n=len(influence)
+        if n>max:
+            a,b,max=i,j,n
+
+# ta had khoooobi pishraftam, ina hame dorost kar mikone.
+# aln bayad influence ha badi check beshe ke faghat algorithm harisanas. max giri :)
+print(a,b,max)
+
 nx.draw(g , with_labels=True)
 plt.show()
-a=checkActivity(activeNode,nodes[0],nodes[1])
-print(a)
-print(intersections[nodes[0]][nodes[1]])
+
