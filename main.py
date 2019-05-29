@@ -20,7 +20,8 @@ for i in range(0,lenNodes):
         intersection=list(set(graph[i]) & set(graph[j]))
         intersections[i][j]=intersection
 
-activeNode={}
+activeNode=set()
+deactiveNode=set(nodes)
 # deep activity finder with recursive func.
 # So search what nodes will be active when you active m and n nodes and their intersections.
 def checkActivity( activeNode, m, n ):
@@ -43,16 +44,22 @@ max=0
 a=0
 b=0
 for i in range(0,lenNodes):
-    for j in range(i+1,len(g.nodes)):
+    for j in range(i+1,lenNodes):
         influence=checkActivity(activeNode,nodes[i],nodes[j])
         n=len(influence)
         if n>max:
             a,b,max=i,j,n
+        if max==lenNodes:
+            break
+activeNode.add(a)
+activeNode.add(b)
+deactiveNode-=activeNode
+if max==lenNodes:
+    print(activeNode)
+    exit()
 
-# ta had khoooobi pishraftam, ina hame dorost kar mikone.
-# aln bayad influence ha badi check beshe ke faghat algorithm harisanas. max giri :)
-# check activity ham age dynamic beshe sexy mishe
-print(a,b,max)
+for i in range(0,le)
+
 
 nx.draw(g , with_labels=True)
 plt.show()
