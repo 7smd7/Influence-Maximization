@@ -51,6 +51,7 @@ for i in range(0,lenNodes):
 
 # ta had khoooobi pishraftam, ina hame dorost kar mikone.
 # aln bayad influence ha badi check beshe ke faghat algorithm harisanas. max giri :)
+# check activity ham age dynamic beshe sexy mishe
 print(a,b,max)
 
 nx.draw(g , with_labels=True)
