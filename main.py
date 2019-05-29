@@ -69,7 +69,7 @@ for i in range(0,len(deactiveNode)):
         n=len(influence)
         if n>max:
             a,b,max=i,j,n
-        if maxj==lenNodes:
+        if max==lenNodes:
             break
 activeNode=checkActivity(activeNode,deactiveNode[a],activeNode[b])
 deactiveNode-=activeNode
