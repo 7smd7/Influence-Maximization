@@ -51,13 +51,16 @@ for i in range(0,lenNodes):
             a,b,max=i,j,n
         if max==lenNodes:
             break
+    if max==lenNodes:
+        break
 ans.add(a)
 ans.add(b)
-activeNode=checkActivity(activeNode,list(deactiveNode)[a],list(deactiveNode)[b])
+activeNode=checkActivity(activeNode,nodes[a],nodes[b])
 deactiveNode-=activeNode
 if max==lenNodes:
     print("We need to active this nodes to active all:/n",ans)
-    # print("To active these (max influence): "activeNode)
+    nx.draw(g , with_labels=True)
+    plt.show()
     exit()
 
 for k in range(0, lenNodes - 2):
@@ -69,16 +72,74 @@ for k in range(0, lenNodes - 2):
             influence=checkActivity(activeNode,list(deactiveNode)[i],list(activeNode)[j])
             n=len(influence)
             if n>max:
-                a,b,max=i,j,n
+                a,b,max=list(deactiveNode)[i],list(activeNode)[j],n
             if max==lenNodes:
                 break
+        if max==lenNodes:
+                break       
     activeNode=checkActivity(activeNode,nodes[a],nodes[b])
     deactiveNode-=activeNode
-    ans.add(b)
+    ans.add(a)
+    if max==lenNodes:
+        break
 
 print("We need to active this nodes to active all: ",ans)
 print("To active these (max influence): ",activeNode)
-    
+
+# finish 1.a  
+print("_____________________________________")
+# start 1.b
+ans=set()
+activeNode=set()
+deactiveNode=set(nodes)
+following={}
+
+for i in nodes:
+    following[i]=0
+
+for i in nodes:
+    for j in list(graph[i].keys()):
+        following[j]+=1
+
+
+# find min price for couple of first nodes.
+min=float("inf")
+a=-1
+b=-1
+for i in range(0,lenNodes):
+    for j in range(i+1,lenNodes):
+        influence=checkActivity(activeNode,nodes[i],nodes[j])
+        value=following[nodes[i]]+following[nodes[j]]
+        if value<=min:
+            a,b,min=i,j,value
+ans.add(a)
+ans.add(b)
+activeNode=checkActivity(activeNode,nodes[a],nodes[b])
+deactiveNode-=activeNode
+if len(activeNode)==lenNodes:
+    print("We need to active this nodes to active all:/n",ans)
+    nx.draw(g , with_labels=True)
+    plt.show()
+    exit()
+
+for k in range(0, lenNodes - 2):
+    min=float("inf")
+    a=-1
+    b=-1
+    for i in range(0,len(deactiveNode)):
+        for j in range(0,len(activeNode)):
+            influence=checkActivity(activeNode,list(deactiveNode)[i],list(activeNode)[j])
+            value=following[nodes[i]]
+            if value<min:
+                a,b,min=list(deactiveNode)[i],list(activeNode)[j],value
+    activeNode=checkActivity(activeNode,nodes[a],nodes[b])
+    deactiveNode-=activeNode
+    ans.add(a)
+    if len(activeNode)==lenNodes:
+        break
+
+print("We need to active this nodes to active all: ",ans)
+print("To active these (max influence): ",activeNode)
+
 nx.draw(g , with_labels=True)
 plt.show()
-
