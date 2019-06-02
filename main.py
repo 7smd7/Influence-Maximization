@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 g = nx.DiGraph()
 
-n = 7  # nodes
-m = 10  # directed edge
+n = 10  # nodes
+m = 20  # directed edge
 
 g = nx.gnm_random_graph(n, m,directed=True) #random directed graph(|V|=n,|E|=m)
 
@@ -108,7 +108,6 @@ a=-1
 b=-1
 for i in range(0,lenNodes):
     for j in range(i+1,lenNodes):
-        influence=checkActivity(activeNode,nodes[i],nodes[j])
         value=following[nodes[i]]+following[nodes[j]]
         if value<=min:
             a,b,min=i,j,value
@@ -125,14 +124,11 @@ if len(activeNode)==lenNodes:
 for k in range(0, lenNodes - 2):
     min=float("inf")
     a=-1
-    b=-1
     for i in range(0,len(deactiveNode)):
-        for j in range(0,len(activeNode)):
-            influence=checkActivity(activeNode,list(deactiveNode)[i],list(activeNode)[j])
-            value=following[nodes[i]]
-            if value<min:
-                a,b,min=list(deactiveNode)[i],list(activeNode)[j],value
-    activeNode=checkActivity(activeNode,nodes[a],nodes[b])
+        value=following[list(deactiveNode)[i]]
+        if value<min:
+            a,min=list(deactiveNode)[i],value
+    activeNode=checkActivity(activeNode,nodes[a],list(activeNode)[0])
     deactiveNode-=activeNode
     ans.add(a)
     if len(activeNode)==lenNodes:
